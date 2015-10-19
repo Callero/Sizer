@@ -1,4 +1,4 @@
-# Small program to calculate useable capacity in a ScaleIO cluster
+# Small program to calculate useable capacity in a cluster
 import math
 
 
