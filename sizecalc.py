@@ -5,13 +5,14 @@ import math
 print "To get the number of devices per node/server, type (1)"
 print "To get the total useable storage, type (2)"
 sel_funct = raw_input("Please choose:")
+print ""
 
 def calc_reserve(nodes): #this function calculates the recommended reserve
 		if (1 / nodes) > 0.1: #Calculate recommended_reserve percent is over 10%
 			reserve = 1 / nodes
 		else: #Recommend minimum 10% reserve
 			reserve = 0.1
-		return recommended
+		return reserve
 
 if sel_funct == "1":
 	desired_number_nodes = float(raw_input("How many nodes are desired?: ")) #input number of nodes desired
@@ -41,8 +42,10 @@ elif sel_funct == "2":
 	print "The recommended reserve is", recommended_reserve * 100, "%"
 	print ""
 	device_size = float(raw_input("Which block device size will be used (TB)?: ")) #input device size
-	devices_per_node = raw_input("How many devices will be used per node/server?")
-	raw_storage = devices_per_node * device_size * number_nodes
-	storage_with_reserve
-	print "With", number_nodes, "nodes/servers", "using", device_size, "TB devices and a reserve of", recommended_reserve, "%"
-	print "You will get approximately", 
+	print ""
+	devices_per_node = raw_input("How many devices will be used per node/server?: ")
+	raw_storage = int(devices_per_node) * int(device_size) * int(number_nodes)
+	storage_with_reserve = raw_storage / (recommended_reserve + 1)
+	storage_with_reserve_overhead = storage_with_reserve / 2
+	print "With", number_nodes, "nodes/servers", "using", device_size, "TB devices and a reserve of", recommended_reserve * 100, "%"
+	print "You will get approximately", round(storage_with_reserve_overhead,2), "TB"
