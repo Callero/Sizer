@@ -1,5 +1,8 @@
 # Small program to calculate useable capacity in a cluster
+import bitmath
 import math
+from math import *
+from bitmath import *
 
 
 print "To get the number of devices per node/server, type (1)"
@@ -20,10 +23,11 @@ if sel_funct == "1":
 	print ""
 	print "The recommended reserve is", recommended_reserve * 100, "%"
 	print ""
-	desired_useable_storage = float(raw_input("How much useable storage is required (TiB)?: ")) #input desired storage
+	desired_useable_storage = TiB(float(raw_input("How much useable storage is required (TiB)?: "))) #input desired storage
 	print ""	
-	device_size = float(raw_input("Which block device size will be used (TB)?: ")) #input device size
-	storage_with_reserve = desired_useable_storage * (1 + recommended_reserve) #calculate the amount of raw storage needed including reserve in TiB
+	device_size = TB(float(raw_input("Which block device size will be used (TB)?: "))) #input device size, TB
+	device_size_tib = device_size.to_TiB() #convert to TiB
+	storage_with_reserve = desired_useable_storage * (1 + recommended_reserve) #calculate the amount of raw storage needed including reserve in TB
 	storage_with_reserve_overhead = storage_with_reserve * 2
 	required_amount_of_devices_total = storage_with_reserve_overhead / (device_size) #calculate the required amount of devices
 	required_amount_of_device_node = required_amount_of_devices_total / desired_number_nodes #calculate the required amount of devices per node/server
@@ -42,13 +46,13 @@ elif sel_funct == "2":
 	print ""
 	print "The recommended reserve is", recommended_reserve * 100, "%"
 	print ""
-	device_size = float(raw_input("Which block device size will be used (TB)?: ")) #input device size in TiB
-	device_size_gib = device_size * 1024 #Getting device size in GiB
+	device_size = TB(float(raw_input("Which block device size will be used (TB)?: "))) #input device size, TB
+	device_size_tib = device_size.to_TiB() #convert to TiB
 	print ""
-	devices_per_node = raw_input("How many devices will be used per node/server?: ")
-	raw_storage = int(devices_per_node) * int(device_size_gib) * int(number_nodes)
-	storage_with_reserve = raw_storage / (recommended_reserve + 1)
-	storage_with_reserve_overhead = (storage_with_reserve / 2) / 1024
+	devices_per_node = raw_input("How many devices will be used per node/server?: ") #input number of devices per node/server
+	raw_storage = int(devices_per_node) * int(device_size_tib) * int(number_nodes) #calculate the raw storage
+	storage_with_reserve = int(raw_storage) / int((recommended_reserve + 1)) #calculate the raw storage with reserve deducted
+	storage_with_reserve_overhead = storage_with_reserve / 2 
 	recommended_reserve_pct = recommended_reserve * 100
-	print "With %i nodes/servers using %i GiB devices and a reserve of %.1f pct" % (number_nodes, device_size_gib, recommended_reserve_pct) 
+	print "With %i nodes/servers using %i GiB devices and a reserve of %.1f pct" % (number_nodes, device_size_tib, recommended_reserve_pct) 
 	print "You will get approximately %i TiB" % (round(storage_with_reserve_overhead,2))
