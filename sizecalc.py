@@ -1,6 +1,4 @@
 # Small program to calculate useable capacity in a cluster
-import bitmath
-import math
 from math import *
 from bitmath import *
 
@@ -30,11 +28,12 @@ if sel_funct == "1":
     device_size = TB(float(raw_input("Which block device size will be used (TB)?: ")))  # input device size, TB
     device_size_tib = device_size.to_TiB()  # convert to TiB
     storage_with_reserve = desired_useable_storage * (
-    1 + recommended_reserve)  # calculate the amount of raw storage needed including reserve in TB
+        1 + recommended_reserve)  # calculate the amount of raw storage needed including reserve in TB
     storage_with_reserve_overhead = storage_with_reserve * 2
     required_amount_of_devices_total = storage_with_reserve_overhead / (
-    device_size)  # calculate the required amount of devices
-    required_amount_of_device_node = required_amount_of_devices_total / desired_number_nodes  # calculate the required amount of devices per node/server
+        device_size)  # calculate the required amount of devices
+    required_amount_of_device_node = required_amount_of_devices_total / desired_number_nodes  # calculate the required
+    # amount of devices per node/server
     recommended_reserve_pct = recommended_reserve * 100
     print ""
     print "Raw storage with reserve", storage_with_reserve, "TiB"
@@ -42,7 +41,7 @@ if sel_funct == "1":
     print "Storage with reserve and copies", storage_with_reserve_overhead, "TiB"
     print ""
     print "To get %i TiB with the recommended reserve %.1f pct using %i devices at %i TB" % (
-    desired_useable_storage, recommended_reserve_pct, desired_number_nodes, device_size)
+        desired_useable_storage, recommended_reserve_pct, desired_number_nodes, device_size)
     print "you will need %i devices per node/server" % math.ceil(required_amount_of_device_node)
 
 elif sel_funct == "2":
@@ -62,5 +61,5 @@ elif sel_funct == "2":
     storage_with_reserve_overhead = storage_with_reserve / 2
     recommended_reserve_pct = recommended_reserve * 100
     print "With %i nodes/servers using %i GiB devices and a reserve of %.1f pct" % (
-    number_nodes, device_size_tib, recommended_reserve_pct)
+        number_nodes, device_size_tib, recommended_reserve_pct)
     print "You will get approximately %i TiB" % (round(storage_with_reserve_overhead, 2))
